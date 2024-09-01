@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+**Configuration**
 
-## Getting Started
+Installing the related libraries
+Installed prisma for the database with npx commands
+Created the prisma.ts in ui/lib to connect to prisma
 
-First, run the development server:
+Created database on the vercel and
+Pasted the .env files to .env
+Pasted the database ref of prisma from vercel to schema.prisma(which created on the installation of prisma)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Created the schema inside the prisma.schema
+Then npx prisma db push this pushes the to database  (which now created the table which we just defined in the model)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Lucia**
+For the authentication of the app
+For lucia we will create a file auth.ts in src and define all the configuration for lucia and validation of cookies which is there on there documentation (I can’t fin the link but the code is lifted from the docs only and dont need to bother about its complexity)
+Next create validation.ts for defining the validation schema for validation of  user credential( email should like email and password validation and much more)
+This is imported from an external library ‘zod’
+And then define some type for email, password like min length and which chars are allowed and what are the error that will be given
+In the nextConfig add a severExternalPackages: [‘@node-rs/argon2’]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**server action for register**
+Adding Server action for handling login and register requests in (auth)/signup/action.ts and (auth)/login/action.ts
+then we parsed the user credentials with signup schema created by zod
+created a password hash
+then created a userId with Fn from lucia
+checked if username and email already exists
+if not then created a user and then created a session for the user
+created a session cookie for the user
+then set the cookie with session cookie credentials 
+and then redirect to the home page
+also we caught the redirect error and thrown it as the cookie is created and redirect to the home page
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**server action on login** 
+its almost the same as register with verification of password and using login validation that's it 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**server action for logout**
+directly in actions.ts in (auth)
+just get session from validateRequest inside auth
+and then invalidate session 
+create a blank cookie and then replace set that as cookie  
