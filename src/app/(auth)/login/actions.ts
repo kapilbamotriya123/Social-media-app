@@ -8,7 +8,7 @@ import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 import {isRedirectError} from "next/dist/client/components/redirect";
 
-const loginIn = async (credentials: loginValues): Promise<{ error: string }> => {
+const login = async (credentials: loginValues): Promise<{ error: string }> => {
     try {
 
         const {username, password} = loginSchema.parse(credentials)
@@ -57,3 +57,5 @@ const loginIn = async (credentials: loginValues): Promise<{ error: string }> => 
         }
     }
 }
+
+export default login

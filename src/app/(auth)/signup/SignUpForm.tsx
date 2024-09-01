@@ -5,9 +5,10 @@ import {signUpSchema, signUpValues} from "@/lib/validation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
 import {useState, useTransition} from "react";
 import signUp from "@/app/(auth)/signup/actions";
+import PasswordInput from "@/components/passwordInput";
+import LoadingButton from "@/components/LoadingButton";
 
 const SignUpForm = () => {
     const [error, setError] = useState<string>()
@@ -34,6 +35,7 @@ const SignUpForm = () => {
         <div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className={'space-y-3'}>
+                    {error && <p className={'text-center text-destructive'}> {error}</p>}
                     <FormField
                         control={form.control}
                         name="username"
@@ -57,7 +59,6 @@ const SignUpForm = () => {
                                 <FormControl>
                                     <Input placeholder='Email' type={"email"} {...field} />
                                 </FormControl>
-                                {/*<FormMessage />*/}
                                 <FormMessage/>
                             </FormItem>
                         )}
@@ -69,16 +70,16 @@ const SignUpForm = () => {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='Password' type={"password"} {...field} />
+                                    <PasswordInput placeholder='Password'  {...field} />
                                 </FormControl>
                                 {/*<FormMessage />*/}
                                 <FormMessage/>
                             </FormItem>
                         )}
                     />
-                    <Button type='submit' className='w-full'>
+                    <LoadingButton loading={isPending} type='submit' className='w-full'>
                         Create account
-                    </Button>
+                    </LoadingButton>
 
                 </form>
             </Form>

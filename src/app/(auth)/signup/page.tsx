@@ -16,7 +16,7 @@ const signUpPage = () => {
                 <div className='w-full space-y-10 overflow-y-auto p-10 md:w-1/2'>
                     <div className='space-y-1 text-center'>
                         <h1 className='text-3xl font-bold'>Sign Up to Kapil&#39;s App</h1>
-                        <p className='text-muted-foreground'>a place where <span className='italic'>you</span> can find friend</p>
+                        <p className='text-muted-foreground'>a place where you can find friend</p>
                     </div>
                     <div className='space-y-5'>
                         <SignUpForm />
