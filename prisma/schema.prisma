@@ -46,6 +46,8 @@ model Post {
   content String
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())  // Adding the createdAt field
+
 
   @@map("posts")
 }
