@@ -80,7 +80,12 @@ Then we added the search field inside its own component which is a regular form 
 we will add the funcionality later when we will have some content 
 
 then we added the dark theme which was done with shadcn,
-first added the subdropdown for theme in userbutton 
+first added the sub dropdown for theme in user button 
 then added the classes and onclick the theme was changed was was fetched was method described below
 wrap the children in root layout insider theme provider
 then the use theme hook was availbale with {theme , setTheme} and wallah we can now set the theme and remember theme was provided in the root layout to change them on login pages too.
+
+**Now I will begin working on sticky sidebar/bottom bar**
+added MenuBar as comp in main only and then added buttons and given classes
+then imported in then (main)/layout
+
