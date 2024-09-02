@@ -89,3 +89,14 @@ then the use theme hook was availbale with {theme , setTheme} and wallah we can 
 added MenuBar as comp in main only and then added buttons and given classes
 then imported in then (main)/layout
 
+**Creating posts**
+added the model for post in prisma.schema
+created a validation type for the post with zod in validation.ts
+create a action for creating post in components/posts/editor/action.ts
+    the general action which add something to db, first validate user then parse the data with the schema and adds the data to db with prisma 
+
+
+**The Tiptap library is used for adding content input check its documentations**
+so tiptap library is added for textarea in the post which resize and all that stuff which makes it pretty we dont have to do it ourselves
+
+so we added the tiptap editor in comp/post/PostEditor.tsx and then added the editor in the post editor comp then added the post comp in the main page
