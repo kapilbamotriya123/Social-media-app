@@ -1,14 +1,12 @@
-'use server';
-
+import { NextApiRequest, NextApiResponse } from 'next';
 import { lucia, validateRequest } from '@/auth';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
-const logOut = async () => {
+const logout = async (req: NextApiRequest, res: NextApiResponse) => {
   const { session } = await validateRequest();
 
   if (!session) {
-    throw new Error('unauthorized');
+    return res.status(401).json({ error: 'unauthorized' });
   }
 
   await lucia.invalidateSession(session.id);
@@ -20,7 +18,8 @@ const logOut = async () => {
     sessionCookie.value,
     sessionCookie.attributes
   );
-  return redirect('/login');
+
+  res.status(200).json({ message: 'Logged out successfully' });
 };
 
-export default logOut;
+export default logout;

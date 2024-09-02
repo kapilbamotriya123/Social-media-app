@@ -70,3 +70,17 @@ the navbar also need some comps which are reusable so put them inside components
 from here I will just add the comps used in sequence for context check the file itself
 the profile icon is added as dropdown menu and added as user button comp
 the user button comp has a profile icon in itself 
+
+
+**Logout && searchField && Theme**
+
+we added the log out button inside the user button dropdown which was connected to the actions.ts in auth which invalidate the session
+
+Then we added the search field inside its own component which is a regular form which on search navigate to url with query of search field 
+we will add the funcionality later when we will have some content 
+
+then we added the dark theme which was done with shadcn,
+first added the subdropdown for theme in userbutton 
+then added the classes and onclick the theme was changed was was fetched was method described below
+wrap the children in root layout insider theme provider
+then the use theme hook was availbale with {theme , setTheme} and wallah we can now set the theme and remember theme was provided in the root layout to change them on login pages too.
