@@ -111,3 +111,18 @@ and fetching pages is easy just normal tailwind
 the date is set relative inside of relativeData.ts in lib
 
 ****
+
+**Trending Sidebar**
+
+Now we added the trending sidebar which we did not added in layout .tsx but we created a comp seperate in /components
+then fetched random users and created a who to follow comp where we added this users to follow and their styling part 
+
+after this we added trending topics inside the trending bar which had a very complex sql query to find the count the count of hashtags and then it returned a table 
+we used unstablecache for storing this hashtag data we set to revalidate every 3 hrs 
+then we built the front page for seeing these trending topics 
+
+REMEMBER WE DID MULTIPLE NEW THINGS HERE TOO SO CHECK GIT HUB COMMITS AS THEY ARE NOW DONE AFTER EVERY COMPLETION OF EVERY SECTION WITH PROPER NAMING 
+CHECK THE RELATED GITHUB TO SEE WHERE WE MADE CHANGES AND WHAT CHANGES WE MADE WITH REFERENCES FROM THIS FILE
+
+
+

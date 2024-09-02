@@ -4,6 +4,7 @@ import { poppins } from '@/app/ui/fonts';
 import React from 'react';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/toaster';
+import ReactQueryProvider from '@/app/ReactQueryProvider';
 
 export const metadata: Metadata = {
   title: {
@@ -21,14 +22,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <ThemeProvider
-          attribute={'class'}
-          defaultTheme={'system'}
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute={'class'}
+            defaultTheme={'system'}
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </ReactQueryProvider>
         <Toaster />
       </body>
     </html>
