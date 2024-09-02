@@ -125,4 +125,23 @@ REMEMBER WE DID MULTIPLE NEW THINGS HERE TOO SO CHECK GIT HUB COMMITS AS THEY AR
 CHECK THE RELATED GITHUB TO SEE WHERE WE MADE CHANGES AND WHAT CHANGES WE MADE WITH REFERENCES FROM THIS FILE
 
 
+**React Query and fetching of notes on the client side with api request**
+added the React query provider and wrapped the complete app inside that 
+created an api route for for-you page and  the for-you component which fetches pots which fetches the post with react query and renders them with post component is added to home page
+
+them removed then cache of react with when a user log out otherwise the next user will see the data of posts feed of prev user
+
+
+**ky**
+ky just makes the fetching of data easier and we can configure it to make the data data of our choice 
+
+**Reactinfinitequeries**
+
+we made a lost of change sin the api to fetch the 10 + 1 notes and if they are greater 10 ie 11, we will send the id of 11th post in the res as nextCursor 
+with react infinite query we can use this cursor to know if there are more posts and if there are the query sends another request under the hood of using fetchNextPage fn given by reactInfiniteQuery
+the type of post is now diff as contains a cursor in it so we defined it in typescript but everything is self explanatory 
+the specif code part is pushed to github under commit 'added ky and  react infinite query and its logic'
+
+
+
 
