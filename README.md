@@ -100,3 +100,14 @@ create a action for creating post in components/posts/editor/action.ts
 so tiptap library is added for textarea in the post which resize and all that stuff which makes it pretty we dont have to do it ourselves
 
 so we added the tiptap editor in comp/post/PostEditor.tsx and then added the editor in the post editor comp then added the post comp in the main page
+
+**Post section**
+so we have render the post on the Home page.tsx and passed to Post(render individual post) 
+the tricky part is that we have added the users info with post and type of which is not known 
+basically post have a type defined in prisma and it gives us that but 
+we dont have any type where can include the contents of foriengn key then issue is solved inside the lib/type.ts which has some really handy methods to get the types of included data
+
+and fetching pages is easy just normal tailwind 
+the date is set relative inside of relativeData.ts in lib
+
+****
