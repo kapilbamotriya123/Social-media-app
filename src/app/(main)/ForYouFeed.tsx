@@ -1,11 +1,11 @@
 'use client';
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { PostData, PostPage } from '@/lib/types';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { PostPage } from '@/lib/types';
 import { Loader2 } from 'lucide-react';
 import Post from '@/components/posts/Post';
 import kyInstance from '@/lib/ky';
-import { Button } from '@/components/ui/button';
+import InfiniteScrollContainer from '@/components/InfiniteScrollContainer';
 
 const ForYouFeed = () => {
   const {
@@ -47,12 +47,15 @@ const ForYouFeed = () => {
   }
 
   return (
-    <div className="space-y-5">
+    <InfiniteScrollContainer
+      className="space-y-5"
+      onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+    >
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
-      <Button onClick={() => fetchNextPage()}>Load more</Button>
-    </div>
+      {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
+    </InfiniteScrollContainer>
   );
 };
 export default ForYouFeed;
