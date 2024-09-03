@@ -12,6 +12,7 @@ const useSubmitPostMutation = () => {
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: submitPost,
     onSuccess: async (newPost) => {

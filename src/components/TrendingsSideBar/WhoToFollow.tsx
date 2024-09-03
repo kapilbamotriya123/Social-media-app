@@ -1,20 +1,27 @@
 import { validateRequest } from '@/auth';
 import prisma from '@/lib/prisma';
-import { UserDataSelect } from '@/lib/types';
+
 import Link from 'next/link';
 import UserAvatar from '@/components/UserAvatar';
-import { Button } from '../ui/button';
+import FollowButton from '../FollowButton';
+import { getUserDataSelect } from '@/lib/types';
 
 const WhoToFollow = async () => {
   const { user } = await validateRequest();
   if (!user) return null;
+  //when we are getting a users info I want to add the followers and if I am following him or not which should be done in include so we will change include
   const usersToFollow = await prisma.user.findMany({
     where: {
       NOT: {
         id: user.id
+      },
+      followers: {
+        none: {
+          followerId: user.id
+        }
       }
     },
-    select: UserDataSelect,
+    select: getUserDataSelect(user.id),
     take: 5
   });
 
@@ -34,7 +41,15 @@ const WhoToFollow = async () => {
               </p>
             </div>
           </Link>
-          <Button>Follow</Button>
+          <FollowButton
+            userId={user.id}
+            initialState={{
+              followers: user._count.followers,
+              isFollowedByUser: user.followers.some(
+                ({ followerId }) => followerId === user.id
+              )
+            }}
+          />
         </div>
       ))}
     </div>

@@ -1,6 +1,6 @@
 import { validateRequest } from '@/auth';
 import prisma from '@/lib/prisma';
-import { postDataInclude, PostPage } from '@/lib/types';
+import { getPostDataInclude, PostPage } from '@/lib/types';
 import { NextRequest } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // let createdAt;
     const posts = await prisma.post.findMany({
-      include: postDataInclude,
+      include: getPostDataInclude(user.id),
       orderBy: { createdAt: 'desc' },
       take: pageSize + 1,
       cursor: cursor ? { id: cursor } : undefined

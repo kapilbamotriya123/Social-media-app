@@ -143,6 +143,38 @@ the type of post is now diff as contains a cursor in it so we defined it in type
 the specif code part is pushed to github under commit 'added ky and  react infinite query and its logic'
 
 **adding a post skeleton in page load**
+added a post skeleton while the page is loading 
+
+**adding post with react query**
+The post uploading should also update the state of application so updating the post is now done query mutations
+the lgic for this is written inside the mutations.ts ie. useSubmitPost mutation which updates the state of the application after adding the post 
+and the sumbitpost is directly called inside the function 
+The code is added to github commit seperately and can be checked if needed
+
+
+**deleting posts**
+we first implemented the actions for deleting post on server which required auth if post admin and user are the same 
+them we implemented the mutation which should call the fn in action and then update the query's state
+then we made the delete button toggle
+and then we added that in a dropdown trigger which was then added to post and then made connection between them 
+
+
+**Following**
+so following something requires optimistic updates
+create a many to many relationship through Follow table which has two field follwing id and follower id 
+make an api route for handling the following request as the optimistic updates are done on the client side and to fetch data on the client side we need to make api call
+first we will make api route which will handle the following related queries
+
+for getting the info whether we follow the user or not we used the get request
+for following the user we used the post request which added the values in the follow table 
+for unfollowing the user we used the delete request which deleted the values from the follow table
+
+then we created the useFollowerInfo  hook which will handle the following and unfollowing of the user
+the use Follower info created a query which takes the userId and initial state
+
+the query key is defined as 'follower-info' and userId which make it unique for the user with whom we are interacting 
+the query function gets the data of follower 
+
 
 
 
