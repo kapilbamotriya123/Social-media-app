@@ -142,6 +142,7 @@ with react infinite query we can use this cursor to know if there are more posts
 the type of post is now diff as contains a cursor in it so we defined it in typescript but everything is self explanatory 
 the specif code part is pushed to github under commit 'added ky and  react infinite query and its logic'
 
+**adding a post skeleton in page load**
 
 
 

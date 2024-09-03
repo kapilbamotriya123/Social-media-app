@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import Post from '@/components/posts/Post';
 import kyInstance from '@/lib/ky';
 import InfiniteScrollContainer from '@/components/InfiniteScrollContainer';
+import PostLoadingSkeleton from '@/components/posts/PostLoadingSkeleton';
 
 const ForYouFeed = () => {
   const {
@@ -33,8 +34,16 @@ const ForYouFeed = () => {
   if (status === 'pending') {
     return (
       <div>
-        <Loader2 className="mx-auto animate-spin" />
+        <PostLoadingSkeleton />
       </div>
+    );
+  }
+
+  if (status === 'success' && !posts.length && !hasNextPage) {
+    return (
+      <p className="text-center text-destructive">
+        Congrats You have got the lucky chance to make first post
+      </p>
     );
   }
 
