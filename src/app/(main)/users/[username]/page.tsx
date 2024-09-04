@@ -10,6 +10,7 @@ import { formatDate } from 'date-fns';
 import FollowerCount from '@/components/FollowerCount';
 import { Button } from '@/components/ui/button';
 import FollowButton from '@/components/FollowButton';
+import UserPost from '@/app/(main)/users/[username]/UserPosts';
 
 interface PageProps {
    params: { username: string };
@@ -57,6 +58,12 @@ const UserPage = async ({ params: { username } }: PageProps) => {
       <main className="flex w-full min-w-0 gap-5">
          <div className={'w-full min-w-0 space-y-5'}>
             <UserProfile user={user} loggedInUserId={loggedInUser.id} />
+            <div className="rounded-2xl bg-card p-5 shadow-sm">
+               <h2 className="text-center text-2xl font-bold">
+                  {user.displayName}&apos;s posts
+               </h2>
+            </div>
+            <UserPost userId={user.id} />
          </div>
 
          <TrendsSidebar />
