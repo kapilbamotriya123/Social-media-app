@@ -1,0 +1,140 @@
+Project Configuration and Development Notes
+Configuration
+Initial Setup
+
+Install related libraries
+Install Prisma for the database using npx commands
+Create prisma.ts in ui/lib to connect to Prisma
+
+Database Setup
+
+Create database on Vercel
+Paste the .env files to .env
+Paste the database reference of Prisma from Vercel to schema.prisma (created during Prisma installation)
+Create the schema inside prisma.schema
+Run npx prisma db push to push the schema to the database (creates the table defined in the model)
+
+Authentication with Lucia
+
+Create auth.ts in src and define all configurations for Lucia and cookie validation (code from Lucia documentation)
+Create validation.ts to define the validation schema for user credentials (using 'zod')
+Define types for email and password (minimum length, allowed characters, error messages)
+In nextConfig, add severExternalPackages: ['@node-rs/argon2']
+
+Server Actions for Authentication
+Register ((auth)/signup/action.ts)
+
+Parse user credentials with signup schema (zod)
+Create password hash
+Generate userId with Lucia function
+Check if username and email already exist
+If not, create user and session
+Create and set session cookie
+Redirect to home page
+Catch and handle redirect errors
+
+Login ((auth)/login/action.ts)
+Similar to register, with password verification and login validation
+Logout ((auth)/actions.ts)
+
+Get session from validateRequest inside auth
+Invalidate session
+Create and set blank cookie
+
+Building Sign Up and Login Pages
+
+Create sign-up page with Tailwind classes
+Add SignUpForm as a client component
+Build form with react-hook-form and shadcn UI components
+Use zod-resolver for input validation
+Handle logging in with server actions and useTransition hook
+Display errors from the server
+
+Custom Components
+
+Create PasswordInput and LoadingButton components in ui/components
+PasswordInput: Toggle password visibility
+LoadingButton: Show loading spinner on click
+
+Layout and Context
+
+Create layout.tsx for auth to redirect if a user already has a session
+Implement SessionContextProvider
+Wrap children of main layout with SessionContextProvider
+Create useSessionContext hook for easy access to session data
+
+Navbar Design
+
+Create Navbar component and import it into main layout
+Add reusable components like UserAvatar
+Implement UserButton component with dropdown menu
+
+Additional Navbar Features
+
+Add logout button to UserButton dropdown
+Implement search field component
+Add theme toggle with shadcn (wrap root layout children in ThemeProvider)
+
+Sidebar/Bottom Bar
+Add MenuBar component with buttons and import it into (main)/layout
+Creating Posts
+
+Add post model to prisma.schema
+Create validation type for posts using zod in validation.ts
+Implement action for creating posts in components/posts/editor/action.ts
+Use Tiptap library for content input (see documentation for details)
+
+Post Section
+
+Render posts on Home page and pass to Post component
+Handle foreign key type issues in lib/type.ts
+Implement relative date display (relativeData.ts in lib)
+
+Trending Sidebar
+
+Create separate component for trending sidebar
+Fetch random users for "Who to Follow" section
+Implement trending topics with complex SQL query
+Use unstableCache to store hashtag data (revalidate every 3 hours)
+
+React Query and Client-Side Fetching
+
+Add ReactQueryProvider and wrap the entire app
+Create API route for "For You" page
+Implement "For You" component with React Query
+Clear React Query cache on user logout
+
+Ky and React Infinite Queries
+
+Configure Ky for easier data fetching
+Implement infinite scrolling with React Infinite Queries
+Modify API to return cursor for pagination
+Update post types to include cursor information
+
+Post Interactions
+
+Add post skeleton for loading state
+Implement post submission with React Query mutations
+Add post deletion functionality
+
+Implement server-side actions
+Create mutation for optimistic updates
+Add delete button toggle and dropdown
+
+
+
+Following System
+
+Create many-to-many relationship through Follow table
+Implement API routes for following-related queries
+Create useFollowerInfo hook for handling follow/unfollow actions
+Set up optimistic updates for following actions
+Implement following feed
+
+Create API route for fetching posts from followed users
+Add tabs to toggle between all users and followed users
+
+
+
+User Page
+(Details to be added)
