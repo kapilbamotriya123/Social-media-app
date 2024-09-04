@@ -173,7 +173,12 @@ then we created the useFollowerInfo  hook which will handle the following and un
 the use Follower info created a query which takes the userId and initial state
 
 the query key is defined as 'follower-info' and userId which make it unique for the user with whom we are interacting 
-the query function gets the data of follower 
+the query function gets the data of follower
+
+**setting up the optimistic updates**
+
+we use the useMutation hook from the react query and what it on clicking the follow button we were we set the mutationFn which handled if the user is already following the acc or not 
+then onMutate we made the optimistic updates which does changes the state of the application without checking the status from backend and if the backend throws error then the state will go back to its prev state
 
 
 
