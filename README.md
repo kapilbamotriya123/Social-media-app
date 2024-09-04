@@ -180,6 +180,15 @@ the query function gets the data of follower
 we use the useMutation hook from the react query and what it on clicking the follow button we were we set the mutationFn which handled if the user is already following the acc or not 
 then onMutate we made the optimistic updates which does changes the state of the application without checking the status from backend and if the backend throws error then the state will go back to its prev state
 
+**Now we will build the following feed**
+which is basically the return the post from the user who you are following and very similar to for you feed
+lets start by react a api route for fetching the posts of user that we follow 
 
+then the route request is called in the following feed just like we did in the for you feed
+we then we added a tabs from shadcn which allow us to toggle between all users and user that we follow 
+
+
+**lets create the user page**
+which we will create in an appropriate directory
 
 

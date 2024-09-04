@@ -1,14 +1,14 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { PostPage } from '@/lib/types';
-import { Loader2 } from 'lucide-react';
-import Post from '@/components/posts/Post';
 import kyInstance from '@/lib/ky';
-import InfiniteScrollContainer from '@/components/InfiniteScrollContainer';
+import { PostPage } from '@/lib/types';
 import PostLoadingSkeleton from '@/components/posts/PostLoadingSkeleton';
+import InfiniteScrollContainer from '@/components/InfiniteScrollContainer';
+import Post from '@/components/posts/Post';
+import { Loader2 } from 'lucide-react';
 
-const ForYouFeed = () => {
+const Following = () => {
    const {
       data,
       fetchNextPage,
@@ -17,7 +17,7 @@ const ForYouFeed = () => {
       isFetchingNextPage,
       status,
    } = useInfiniteQuery({
-      queryKey: ['post-feed', 'for-you'],
+      queryKey: ['post-feed', 'following'],
       queryFn: ({ pageParam }) =>
          kyInstance
             .get(
@@ -42,7 +42,8 @@ const ForYouFeed = () => {
    if (status === 'success' && !posts.length && !hasNextPage) {
       return (
          <p className="text-center text-destructive">
-            Congrats You have got the lucky chance to make first post
+            Start following someone to see their post, A good suggestion is
+            Kapil(maybe)
          </p>
       );
    }
@@ -67,4 +68,5 @@ const ForYouFeed = () => {
       </InfiniteScrollContainer>
    );
 };
-export default ForYouFeed;
+
+export default Following;

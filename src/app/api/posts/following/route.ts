@@ -1,20 +1,32 @@
+//so first we will have validate the user
+//then find the post of users who has followers id === logged in user id
+//then we will send the posts
+
 import { validateRequest } from '@/auth';
 import prisma from '@/lib/prisma';
 import { getPostDataInclude, PostPage } from '@/lib/types';
 import { NextRequest } from 'next/server';
 
-export const GET = async (req: NextRequest) => {
+const GET = async (req: NextRequest) => {
    try {
       const cursor = req.nextUrl.searchParams.get('cursor') || undefined;
-
       const pageSize = 10;
 
       const { user } = await validateRequest();
-      if (!user) {
-         return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
 
+      if (!user) {
+         return Response.json({ error: 'unauthorised' }, { status: 401 });
+      }
       const posts = await prisma.post.findMany({
+         where: {
+            user: {
+               followers: {
+                  some: {
+                     followerId: user.id,
+                  },
+               },
+            },
+         },
          include: getPostDataInclude(user.id),
          orderBy: { createdAt: 'desc' },
          take: pageSize + 1,
@@ -31,6 +43,11 @@ export const GET = async (req: NextRequest) => {
       return Response.json(data);
    } catch (error) {
       console.error(error);
-      return Response.json({ error: 'internal server error' }, { status: 500 });
+      return Response.json(
+         { error: ' internal server error' },
+         { status: 500 },
+      );
    }
 };
+
+export default GET;
