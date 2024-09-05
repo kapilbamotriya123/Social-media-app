@@ -207,4 +207,17 @@ create an api route in users/username/[username]
 after creating api route we made a comp userlinkwithtootip which calls this route via react query and give the info the usertooltip which wraps the link and complete thing is returned with a prop username 
 and it was used in the linkify where we were make the username into link so that it has username info and the which passes as prop to our comp and wallah everything works
 
-ff
+**now we will start to upload the user profile via setting up upload thing**
+first connect github with the upload thing 
+then get the keys from the upload thing 
+put the keys in the env
+then use the appid to available for client by adding adding NEXT_PUBLIC_
+then create a file router in core.ts in the api/uploadthing/core.ts
+then create a route which uses the createRouteHandler from the upload thing and provides a GET And POST router
+we export the useUploadThing and uploadFiles too which we get from the generate react helper inside the file uploadthing.ts in lib
+last in the root layout we have to add the Nextssrplugin and routerconfig value is extractRouterConfig(fileRouter) this is mentioned in the documentation and I am note sure why are using it 
+
+
+next up we
+
+
