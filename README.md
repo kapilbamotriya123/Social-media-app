@@ -202,4 +202,9 @@ added a user toop tip which on hover on user profile shows user info and follow 
 this needs to done in many places wherever there is any username so it provider like comp which wraps the user info and user info is passed to it via props 
 
 
-    
+**for setting tooltip for username in the post we have to create a api route as the user tooltip provider need the user info**
+create an api route in users/username/[username]
+after creating api route we made a comp userlinkwithtootip which calls this route via react query and give the info the usertooltip which wraps the link and complete thing is returned with a prop username 
+and it was used in the linkify where we were make the username into link so that it has username info and the which passes as prop to our comp and wallah everything works
+
+ff
