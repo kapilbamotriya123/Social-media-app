@@ -14,7 +14,6 @@ interface FollowButtonProps {
 
 const FollowButton = ({ userId, initialState }: FollowButtonProps) => {
    const { data } = useFollowerInfo(userId, initialState);
-   console.log('this is the data the I want to see', { ...data });
    const { toast } = useToast();
 
    const queryClient = useQueryClient();

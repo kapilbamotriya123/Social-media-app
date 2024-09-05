@@ -192,3 +192,14 @@ we then we added a tabs from shadcn which allow us to toggle between all users a
 which we will create in an appropriate directory
 
 
+**making hashtags @ and url into urls from the posts**
+we will use linkify react lib which give us freedom to convert text into url 
+it words by wrapping the inside it and the rendering the children then it will search the hashtags and urls which we will define in the component
+check comp for details
+
+**UserTooltip**
+added a user toop tip which on hover on user profile shows user info and follow button 
+this needs to done in many places wherever there is any username so it provider like comp which wraps the user info and user info is passed to it via props 
+
+
+    

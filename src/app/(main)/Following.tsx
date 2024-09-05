@@ -21,7 +21,7 @@ const Following = () => {
       queryFn: ({ pageParam }) =>
          kyInstance
             .get(
-               '/api/posts/for-you',
+               '/api/posts/following',
                pageParam ? { searchParams: { cursor: pageParam } } : {},
             )
             .json<PostPage>(),
@@ -32,18 +32,13 @@ const Following = () => {
    const posts = data?.pages.flatMap((page) => page.posts) || [];
 
    if (status === 'pending') {
-      return (
-         <div>
-            <PostLoadingSkeleton />
-         </div>
-      );
+      return <PostLoadingSkeleton />;
    }
 
    if (status === 'success' && !posts.length && !hasNextPage) {
       return (
-         <p className="text-center text-destructive">
-            Start following someone to see their post, A good suggestion is
-            Kapil(maybe)
+         <p className="text-center text-muted-foreground">
+            No posts found. Start following people to see their posts here.
          </p>
       );
    }
@@ -51,7 +46,7 @@ const Following = () => {
    if (status === 'error') {
       return (
          <p className="text-center text-destructive">
-            An error occurred while loading the post
+            An error occurred while loading posts.
          </p>
       );
    }
@@ -64,7 +59,9 @@ const Following = () => {
          {posts.map((post) => (
             <Post key={post.id} post={post} />
          ))}
-         {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
+         {isFetchingNextPage && (
+            <Loader2 className="mx-auto my-3 animate-spin" />
+         )}
       </InfiniteScrollContainer>
    );
 };

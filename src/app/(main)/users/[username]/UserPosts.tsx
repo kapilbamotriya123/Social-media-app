@@ -36,17 +36,13 @@ const UserPost = ({ userId }: UserPostProp) => {
    const posts = data?.pages.flatMap((page) => page.posts) || [];
 
    if (status === 'pending') {
-      return (
-         <div>
-            <PostLoadingSkeleton />
-         </div>
-      );
+      return <PostLoadingSkeleton />;
    }
 
    if (status === 'success' && !posts.length && !hasNextPage) {
       return (
-         <p className="text-center text-destructive">
-            User has note Made any post
+         <p className="text-center text-muted-foreground">
+            This user hasn&apos;t posted anything yet.
          </p>
       );
    }
@@ -54,7 +50,7 @@ const UserPost = ({ userId }: UserPostProp) => {
    if (status === 'error') {
       return (
          <p className="text-center text-destructive">
-            An error occurred while loading the post
+            An error occurred while loading posts.
          </p>
       );
    }
@@ -67,7 +63,9 @@ const UserPost = ({ userId }: UserPostProp) => {
          {posts.map((post) => (
             <Post key={post.id} post={post} />
          ))}
-         {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
+         {isFetchingNextPage && (
+            <Loader2 className="mx-auto my-3 animate-spin" />
+         )}
       </InfiniteScrollContainer>
    );
 };

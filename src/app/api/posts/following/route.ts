@@ -7,7 +7,7 @@ import prisma from '@/lib/prisma';
 import { getPostDataInclude, PostPage } from '@/lib/types';
 import { NextRequest } from 'next/server';
 
-const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
    try {
       const cursor = req.nextUrl.searchParams.get('cursor') || undefined;
       const pageSize = 10;
@@ -49,5 +49,3 @@ const GET = async (req: NextRequest) => {
       );
    }
 };
-
-export default GET;
