@@ -218,6 +218,10 @@ we export the useUploadThing and uploadFiles too which we get from the generate 
 last in the root layout we have to add the Nextssrplugin and routerconfig value is extractRouterConfig(fileRouter) this is mentioned in the documentation and I am note sure why are using it 
 
 
-next up we
+next up we will start using upload thing to update the user
+we created a action updateUser which takes the values bio and displayName and updates the database and returns the updated user
+then we will create a mutations.ts which keeps the code clean and this will update the query cache and server side stuff
+the mutations is very lengthy but understandable as these are pretty much the same update the details to server and change the cached query
+the show error or success message 
 
 
