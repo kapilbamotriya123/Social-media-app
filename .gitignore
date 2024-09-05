@@ -26,7 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env*.localgit filter-branch --index-filter "git rm -rf --cached --ignore-unmatch .env
 .env
 
 # vercel
