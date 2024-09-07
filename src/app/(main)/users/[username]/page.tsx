@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import FollowButton from '@/components/FollowButton';
 import UserPost from '@/app/(main)/users/[username]/UserPosts';
 import Linkify from '@/components/Linkify';
+import EditProfileButton from "@/app/(main)/users/[username]/EditProfileButton";
 
 interface PageProps {
    params: { username: string };
@@ -118,7 +119,7 @@ const UserProfile = ({ user, loggedInUserId }: UserProfileProps) => {
                   </div>
                </div>
             </div>
-            {user.id === loggedInUserId && <Button>Edit Profile</Button>}
+            {user.id === loggedInUserId &&  <EditProfileButton user={user} />}
             {user.id !== loggedInUserId && (
                <FollowButton userId={user.id} initialState={followerInfo} />
             )}

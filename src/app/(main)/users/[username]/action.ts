@@ -2,14 +2,14 @@
 
 import {
    UpdateUserProfileValues,
-   uploadUserProfileSchema,
+   updateUserProfileSchema,
 } from '@/lib/validation';
 import { validateRequest } from '@/auth';
 import prisma from '@/lib/prisma';
 import { getUserDataSelect } from '@/lib/types';
 
 export const updateUserProfile = async (values: UpdateUserProfileValues) => {
-   const validatedValues = uploadUserProfileSchema.parse(values);
+   const validatedValues = updateUserProfileSchema.parse(values);
 
    const { user } = await validateRequest();
 

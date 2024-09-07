@@ -24,9 +24,9 @@ export const createPostSchema = z.object({
    content: requiredString,
 });
 
-export const uploadUserProfileSchema = z.object({
+export const updateUserProfileSchema = z.object({
    displayName: requiredString.min(3, 'minimum three chars required'),
    bio: requiredString.max(1000, 'maximum 1000 characters allowed'),
 });
 
-export type UpdateUserProfileValues = z.infer<typeof uploadUserProfileSchema>;
+export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;

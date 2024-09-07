@@ -52,7 +52,7 @@ const useSubmitPostMutation = () => {
             },
          );
 
-         queryClient.invalidateQueries({
+         await queryClient.invalidateQueries({
             queryKey: queryFilter.queryKey,
             predicate(query) {
                return queryFilter.predicate(query) && !query.state.data;
@@ -74,5 +74,5 @@ const useSubmitPostMutation = () => {
 
    return mutation;
 };
-
 export default useSubmitPostMutation;
+

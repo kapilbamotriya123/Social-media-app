@@ -224,4 +224,3 @@ then we will create a mutations.ts which keeps the code clean and this will upda
 the mutations is very lengthy but understandable as these are pretty much the same update the details to server and change the cached query
 the show error or success message 
 
-
