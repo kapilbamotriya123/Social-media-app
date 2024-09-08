@@ -254,3 +254,17 @@ for resizing we use the react-image-file-resizer package , this takes a number o
 after all this we mutate the new avatarFile too which we define in new onj called avatar url and use it as croppedImage by converting the blob to file and if cropped image is not there we set it to undefined and then we mutate the new avatar
 
 now we will change the core.ts to delete the old avatar when I upload a new one which does this as explained in the comments of the same 
+
+
+**OK so now we will upload media along with text in the posts**
+
+[//]: # (most of the stuff is defined in the the comments)
+first we will add a new prisma model Media 
+then will make a relation between media and post, ie. on post can have multiple media
+
+then we change the core.ts accordingly to add the images and videos
+we return the mediaId from here which we will use when creating a new post 
+so lets change the validation for creating new post
+
+after all this we will build the custom hook to upload the media 
+created a custom hook useMediaUploads which renders all the neccessary hooks 

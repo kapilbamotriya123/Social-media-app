@@ -58,8 +58,24 @@ model Post {
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())  // Adding the createdAt field
-
+  attachments Media[] //sets the relation between media post as attachment
 
   @@map("posts")
 }
 
+model Media {
+  id String @id @default(cuid())
+  postId String? //here we are using a optional because when we delete the post these database need to stay in order to delete it from the uploadthing
+  post Post? @relation(fields: [postId], references: [id], onDelete: SetNull)
+  type MediaType //this is for verifying if the attachment is photo or video and is defined below as enum
+  url String //the upload thing url where the actual data will be
+
+  createdAt DateTime @default(now())
+
+  @@map("post_media")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
