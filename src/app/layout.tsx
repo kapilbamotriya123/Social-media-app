@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import ReactQueryProvider from '@/app/ReactQueryProvider';
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
-import { fileRouter } from '@/app/api/uploadThing/core';
+import { fileRouter } from '@/app/api/uploadthing/core';
 
 export const metadata: Metadata = {
    title: {
@@ -25,6 +25,7 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body className={poppins.className}>
+            {/*this part was added from uploadthing documentation in the update round*/}
             <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)} />
             <ReactQueryProvider>
                <ThemeProvider

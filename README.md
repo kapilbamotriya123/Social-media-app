@@ -217,10 +217,40 @@ then create a route which uses the createRouteHandler from the upload thing and 
 we export the useUploadThing and uploadFiles too which we get from the generate react helper inside the file uploadthing.ts in lib
 last in the root layout we have to add the Nextssrplugin and routerconfig value is extractRouterConfig(fileRouter) this is mentioned in the documentation and I am note sure why are using it 
 
-
-next up we will start using upload thing to update the user
+This whole part is repeated below for better understanding of concept so check that instead of this 
+**next up we will start using upload thing to update the user
 we created a action updateUser which takes the values bio and displayName and updates the database and returns the updated user
 then we will create a mutations.ts which keeps the code clean and this will update the query cache and server side stuff
 the mutations is very lengthy but understandable as these are pretty much the same update the details to server and change the cached query
-the show error or success message 
+the show error or success message** 
 
+**Uploading Files on the UploadThing**
+first we need to set the api route for upload thing that we did in the api/uploadThing/core.ts 
+Some important things are we replaced the file url with the custom url that is generated for us with out app id in it so that anyone cannot access this urla dn only req from our app are received
+after that we need to whitelist the url before loading it, (as it will make request from server to another file so whitelisting is done )
+white listing is done in next.config.mjs
+we need to whitelist this app because nextjs resizes the image and to stop anyone form using our server for resizing their image need to make sure that request received from our app are only accepted which is done by url specific to our app
+
+then we will create the actual route which will handle this api call from client in api/uploadThing/route.ts which we get upload createRouteHandler from upload which takes on arg that is router: fileRouter(that we just finished setting up)
+we need to export the useUploadthing and uploadFiles hook from the lib/uploadThings.ts
+then we add the NextSSRPlugin in root laout
+
+we now need to edit profile of user but that also contains the name and bio so we should first create validation schema for them
+
+so lets now start creating the server action for handling the updates on edit profile (this is created only for display name and bio because the upload files have their own router)
+now we will create a mutations.ts file for mutating data (the file is created in the router where show the user profile)
+the mutation function is quite complex but what is does is , it performs both the request to updateUserdata and update the avatar url and changes the query cache in order to display the avatar on all posts 
+
+Next up we will made the Edit button functional 
+we create a edit button dialoge which gets rendered on clicking edit button 
+this dialog has a form which contains the display name and bio in field 
+but we also have avatarInput in it which have made in seperate comp avatar input which renders an image and a camera on it and on clicking it a file selector pops up 
+and now we want to crop this image with acrop dialog which we make in comp dir as this is reusable and take image, aspect ratio, onCropped-fn, onClose-fn which we will where the comp is being used
+we are using react-cropper for cropping the image which also has the css file which needs to be imported in order to give the crop styles that we want 
+
+In avatar input after selecting the image we have fn onImageSelected which resizes the image before passing it to cropImage dialog the 
+for resizing we use the react-image-file-resizer package , this takes a number of arguments and and set the resized image to setImageToCrop and as soon as the imageToCrop is defined the crop image dialog appears
+
+after all this we mutate the new avatarFile too which we define in new onj called avatar url and use it as croppedImage by converting the blob to file and if cropped image is not there we set it to undefined and then we mutate the new avatar
+
+now we will change the core.ts to delete the old avatar when I upload a new one which does this as explained in the comments of the same 

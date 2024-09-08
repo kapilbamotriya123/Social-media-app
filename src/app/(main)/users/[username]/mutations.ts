@@ -1,77 +1,83 @@
 import {
-   InfiniteData,
-   QueryFilters,
-   useMutation,
-   useQueryClient,
-} from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
-import { UpdateUserProfileValues } from '@/lib/validation';
-import { useUploadThing } from '@/lib/uploadthing';
-import { updateUserProfile } from '@/app/(main)/users/[username]/action';
-import { PostData, PostPage } from '@/lib/types';
+  InfiniteData,
+  QueryFilters,
+  useMutation,
+  useQueryClient
+} from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { UpdateUserProfileValues } from "@/lib/validation";
+import { useUploadThing } from "@/lib/uploadthing";
+import { updateProfile } from "@/app/(main)/users/[username]/action";
+import { PostData, PostPage } from "@/lib/types";
 
-export const useUpdateUserMutation = () => {
-   const { toast } = useToast();
-   const router = useRouter();
-   const queryClient = useQueryClient();
-   const { startUpload: startAvatarUpload } = useUploadThing('avatar');
+export const useUpdateProfileMutation = () => {
+  const { toast } = useToast();
 
-   const mutation = useMutation({
-      mutationFn: async ({
-         values,
-         avatar,
-      }: {
-         values: UpdateUserProfileValues;
-         avatar?: File;
-      }) => {
-         return Promise.all([
-            updateUserProfile(values),
-            avatar && startAvatarUpload([avatar]),
-         ]);
-      },
-      onSuccess: async ([updatedUser, uploadResult]) => {
-         const newAvatarUrl = uploadResult?.[0].serverData.avatarUrl;
+  const queryClient = useQueryClient();
+  const router = useRouter()
 
-         const queryFilter: QueryFilters = { queryKey: ['post-feed'] };
-         queryClient.setQueriesData<InfiniteData<PostPage, string | null>>(
-            queryFilter,
-            (oldData) => {
-               if (!oldData) return;
+  const { startUpload: startAvatarUpload } = useUploadThing("avatar");
 
-               return {
-                  pageParams: oldData.pageParams,
-                  pages: oldData.pages.map((page) => ({
-                     nextCursor: page.nextCursor,
-                     posts: page.posts.map((post) => {
-                        if (post.user.id === updatedUser.id) {
-                           return {
-                              ...post,
-                              user: {
-                                 ...updatedUser,
-                                 avatarUrl:
-                                    newAvatarUrl || updatedUser.avatarUrl,
-                              },
-                           };
-                        }
-                        return post;
-                     }),
-                  })),
-               };
-            },
-         );
-         router.refresh();
-         toast({
-            description: 'Profile updated',
-         });
-      },
-      onError(error) {
-         console.error(error);
-         toast({
-            variant: "destructive",
-            description: "Failed to update profile. Please try again.",
-         });
-      },
-   });
-   return mutation;
-};
+  const mutation = useMutation({
+    mutationFn: async ({
+                         values,
+                         avatar
+                       }: { values: UpdateUserProfileValues; avatar?: File; }) => {
+      return Promise.all([
+        updateProfile(values), avatar && startAvatarUpload([avatar])
+      ]);
+    },
+    onSuccess: async ([updatedUser, uploadResult]) => {
+      //get the new avatar url from the upload result
+      const newAvatarUrl = uploadResult?.[0].serverData.avatarUrl;
+
+      //define the query filter
+      const queryFilter: QueryFilters = { queryKey: ["post-feed"] };
+
+      //cancel the ongoing queries
+      await queryClient.cancelQueries(queryFilter);
+
+      //set the new query data
+      queryClient.setQueriesData<InfiniteData<PostPage, string | null>>(
+         queryFilter,
+         (oldData) => {
+            if (!oldData) return;
+
+            return {
+               pageParams: oldData.pageParams,
+               pages: oldData.pages.map((page) => ({
+                  nextCursor: page.nextCursor,
+                  posts: page.posts.map((post) => {
+                     if (post.user.id === updatedUser.id) {
+                        return {
+                           ...post,
+                           user: {
+                              ...updatedUser,
+                              avatarUrl: newAvatarUrl || updatedUser.avatarUrl,
+                           },
+                        };
+                     }
+                     return post;
+                  }),
+               })),
+            };
+         },
+      );
+      router.refresh();
+      toast({
+        description: 'Profile Updated'
+      })
+
+        },
+    onError(error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        description: 'Failed to update user profile'
+      })
+    }
+  });
+  return mutation
+}
+

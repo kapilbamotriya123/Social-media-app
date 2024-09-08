@@ -31,7 +31,8 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Resizer from 'react-image-file-resizer';
 import { Button } from '@/components/ui/button';
-import { useUpdateUserMutation } from "@/app/(main)/users/[username]/mutations";
+import { useUpdateProfileMutation } from "@/app/(main)/users/[username]/mutations";
+import AvatarInput from "@/app/(main)/users/[username]/AvatarInput";
 
 interface EditProfileDialogProps {
    user: UserData;
@@ -52,23 +53,27 @@ const EditProfileDialog = ({
       },
    });
 
-   const mutation = useUpdateUserMutation()
+   const mutation = useUpdateProfileMutation()
 
-   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
+  //we will use another use state for var croppedAvatar because we want to upload cropped avatar if it is present
+  const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null)
+
 
    const onSubmit = async (values: UpdateUserProfileValues) => {
-      const newAvatarFile = croppedAvatar
-         ? new File([croppedAvatar], `avatar_${user.id}.webp`)
-         : undefined;
+     //here we define the newAvatar file which we do by converting the blob returned by cropper into file and update the mutation accordingly
+     const newAvatarFile = croppedAvatar
+     ? new File([croppedAvatar], `avatar_${user.username}.webp`)
+       : undefined
+
 
       mutation.mutate(
         {
            values,
-           avatar: newAvatarFile,
+          avatar: newAvatarFile
         },
         {
            onSuccess: () => {
-              setCroppedAvatar(null);
+              setCroppedAvatar(null)
               onOpenChange(false);
            },
         },
@@ -83,14 +88,14 @@ const EditProfileDialog = ({
             </DialogHeader>
             <div className="space-y-1.5">
                <Label>Avatar</Label>
-               <AvatarInput
-                  src={
-                     croppedAvatar
-                        ? URL.createObjectURL(croppedAvatar)
-                        : user.avatarUrl || avatarPlaceholder
-                  }
-                  onImageCropped={setCroppedAvatar}
-               />
+            {/*  here we will show the avatar in the dialog if the avatar is there and if not we will show the placeholder avatar als*/}
+              <AvatarInput src={
+                croppedAvatar
+                ? URL.createObjectURL(croppedAvatar)
+                  : user.avatarUrl || avatarPlaceholder
+              } onImageCropped={setCroppedAvatar} />
+
+
             </div>
             <Form {...form}>
                <form
@@ -142,70 +147,5 @@ const EditProfileDialog = ({
 
 export default EditProfileDialog;
 
-//this is for the Avatar input
-interface AvatarInputProps {
-   src: string | StaticImageData;
-   onImageCropped: (blob: Blob | null) => void;
-}
+//the avatar input is completely started again from scratch
 
-function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
-   const [imageToCrop, setImageToCrop] = useState<File>();
-
-   const fileInputRef = useRef<HTMLInputElement>(null);
-
-   function onImageSelected(image: File | undefined) {
-      if (!image) return;
-
-      Resizer.imageFileResizer(
-         image,
-         1024,
-         1024,
-         'WEBP',
-         100,
-         0,
-         (uri) => setImageToCrop(uri as File),
-         'file',
-      );
-   }
-
-   return (
-      <>
-         <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => onImageSelected(e.target.files?.[0])}
-            ref={fileInputRef}
-            className="sr-only hidden"
-         />
-         <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="group relative block"
-         >
-            <Image
-               src={src}
-               alt="Avatar preview"
-               width={150}
-               height={150}
-               className="size-32 flex-none rounded-full object-cover"
-            />
-            <span className="absolute inset-0 m-auto flex size-12 items-center justify-center rounded-full bg-black bg-opacity-30 text-white transition-colors duration-200 group-hover:bg-opacity-25">
-               <Camera size={24} />
-            </span>
-         </button>
-         {imageToCrop && (
-            <CropImageDialog
-               src={URL.createObjectURL(imageToCrop)}
-               cropAspectRatio={1}
-               onCropped={onImageCropped}
-               onClose={() => {
-                  setImageToCrop(undefined);
-                  if (fileInputRef.current) {
-                     fileInputRef.current.value = '';
-                  }
-               }}
-            />
-         )}
-      </>
-   );
-}
