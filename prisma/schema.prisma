@@ -5,70 +5,84 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
-  id String @id
-  username String @unique
-  displayName String
-  email String?
+  id           String    @id
+  username     String    @unique
+  displayName  String
+  email        String?
   passwordHash String?
-  googleId String?
-  avatarUrl String?
-  bio String ?
-  sessions Session[]
-  posts Post[]
-  following             Follow[]       @relation("Following")
-  followers             Follow[]       @relation("Followers")
+  googleId     String?
+  avatarUrl    String?
+  bio          String?
+  sessions     Session[]
+  posts        Post[]
+  following    Follow[]  @relation("Following")
+  followers    Follow[]  @relation("Followers")
+  likes      Like[]
 
-createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@map("users")
 }
 
 model Session {
-  id String @id
-  userId String
+  id        String   @id
+  userId    String
   expiresAt DateTime
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
+
 model Follow {
   followerId  String
   follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
   followingId String
   following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
-  @@unique([followerId, followingId])
 
+  @@unique([followerId, followingId])
   @@map("follows")
 }
 
-model Post {
-  id String @id @default(cuid())
-  content String
+model Like {
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())  // Adding the createdAt field
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@map("likes")
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  content     String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) // Adding the createdAt field
   attachments Media[] //sets the relation between media post as attachment
+  likes      Like[]
+  
 
   @@map("posts")
 }
 
 model Media {
-  id String @id @default(cuid())
+  id     String    @id @default(cuid())
   postId String? //here we are using a optional because when we delete the post these database need to stay in order to delete it from the uploadthing
-  post Post? @relation(fields: [postId], references: [id], onDelete: SetNull)
-  type MediaType //this is for verifying if the attachment is photo or video and is defined below as enum
-  url String //the upload thing url where the actual data will be
+  post   Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
+  type   MediaType //this is for verifying if the attachment is photo or video and is defined below as enum
+  url    String //the upload thing url where the actual data will be
 
   createdAt DateTime @default(now())
 

@@ -275,3 +275,12 @@ created a custom hook useMediaUploads which renders all the neccessary hooks
 is is done by a hook useDrazone by upload thing itself
 
 then added the cron job to delete the orphaned files in clear-uplaods file
+
+
+**added the post details page which is its own route very easy to implement**
+
+
+**Likes functionality**
+ad model to prisma just like the follower 
+the create a route with get post and delete which are self explainatory 
+then create a like button comp which takes the initial data and post, it  mutate the data to route acc to initial data and also display the like button ofc

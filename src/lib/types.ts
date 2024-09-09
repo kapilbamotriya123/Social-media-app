@@ -1,4 +1,3 @@
-
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
@@ -36,7 +35,20 @@ export const getPostDataInclude = (loggedInUserId: string) => {
       user: {
          select: getUserDataSelect(loggedInUserId),
       },
-      attachments: true
+      attachments: true,
+      likes: {
+         where: {
+            userId: loggedInUserId,
+         },
+         select: {
+            userId: true,
+         },
+      },
+      _count: {
+         select: {
+            likes: true,
+         },
+      },
    } satisfies Prisma.PostInclude;
 };
 
@@ -52,4 +64,9 @@ export interface PostPage {
 export interface FollowerInfo {
    followers: number;
    isFollowedByUser: boolean;
+}
+
+export interface LikesInfo {
+   likes: number;
+   isLikedByUser: boolean;
 }

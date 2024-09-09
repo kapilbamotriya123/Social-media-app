@@ -58,7 +58,7 @@ export const POST = async (
          return Response.json({ error: 'Unauthorized' }, { status: 401 });
       }
 
-      prisma.follow.upsert({
+      await prisma.follow.upsert({
          where: {
             followerId_followingId: {
                followerId: loggedInUser.id,
@@ -89,7 +89,7 @@ export const DELETE = async (
          return Response.json({ error: 'Unauthorized' }, { status: 401 });
       }
 
-      prisma.follow.deleteMany({
+      await prisma.follow.deleteMany({
          where: {
             followerId: loggedInUser.id,
             followingId: userId,

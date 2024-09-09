@@ -12,6 +12,7 @@ import { Media } from '@prisma/client';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import AttachmentPreviews from './editor/AttachmentsPreview';
+import LikeButton from '@/app/api/posts/LikeButton';
 
 interface PostProps {
    post: PostData;
@@ -41,6 +42,7 @@ const Post = ({ post }: PostProps) => {
                   <Link
                      href={`posts/${post.id}`}
                      className="block text-sm text-muted-foreground hover:underline"
+                     suppressHydrationWarning
                   >
                      {formatRelativeDate(post.createdAt)}
                   </Link>
@@ -58,7 +60,19 @@ const Post = ({ post }: PostProps) => {
                {post.content}
             </div>
          </Linkify>
-         {!!post.attachments && <MediaPreviews attachments={post.attachments} />}
+         {!!post.attachments && (
+            <MediaPreviews attachments={post.attachments} />
+         )}
+         <hr className='text-muted-foreground' />
+         <LikeButton
+            postId={post.id}
+            initialState={{
+               likes: post._count.likes,
+               isLikedByUser: post.likes.some(
+                  (like) => like.userId === user.id,
+               ),
+            }}
+         />
       </article>
    );
 };
@@ -69,15 +83,20 @@ interface MediaPreviewsProps {
    attachments: Media[];
 }
 
-const MediaPreviews =  ({attachments} : MediaPreviewsProps) => {
+const MediaPreviews = ({ attachments }: MediaPreviewsProps) => {
    return (
-      <div className={cn('flex flex-col gap-3', attachments.length > 1 && 'sm:grid sm:grid-cols-2')}>
-         {attachments.map(a => (
+      <div
+         className={cn(
+            'flex flex-col gap-3',
+            attachments.length > 1 && 'sm:grid sm:grid-cols-2',
+         )}
+      >
+         {attachments.map((a) => (
             <MediaPreview media={a} key={a.id} />
          ))}
       </div>
-   )
-}
+   );
+};
 
 interface MediaPreviewProps {
    media: Media;
@@ -91,17 +110,21 @@ const MediaPreview = ({ media }: MediaPreviewProps) => {
             alt={'attachment preview'}
             height={500}
             width={500}
-            className="mx-auto size-fit rounded-2xl max-h-[30rem]"
+            className="mx-auto size-fit max-h-[30rem] rounded-2xl"
          />
       );
    }
    if (media.type === 'VIDEO') {
-      return <div>
-      <video src={media.url} controls className='mx-auto size-fit rounded-2xl max-h-[30rem]' />
-   </div>
-      
+      return (
+         <div>
+            <video
+               src={media.url}
+               controls
+               className="mx-auto size-fit max-h-[30rem] rounded-2xl"
+            />
+         </div>
+      );
    }
 
-   return <p className='text-destructive'>unsupported media type</p>
+   return <p className="text-destructive">unsupported media type</p>;
 };
-

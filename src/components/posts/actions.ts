@@ -6,7 +6,7 @@ import { getPostDataInclude } from '@/lib/types';
 
 export const deletePost = async (id: string) => {
   const { user } = await validateRequest();
-  if (!user) return null;
+  if (!user) throw new Error('unauthorized')
 
   const post = await prisma.post.findUnique({
     where: { id }
