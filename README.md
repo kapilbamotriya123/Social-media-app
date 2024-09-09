@@ -273,3 +273,5 @@ created a custom hook useMediaUploads which renders all the neccessary hooks
 
 **Now we will build drag and drop along with copy paste**
 is is done by a hook useDrazone by upload thing itself
+
+then added the cron job to delete the orphaned files in clear-uplaods file
