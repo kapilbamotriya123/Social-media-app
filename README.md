@@ -268,3 +268,8 @@ so lets change the validation for creating new post
 
 after all this we will build the custom hook to upload the media 
 created a custom hook useMediaUploads which renders all the neccessary hooks 
+
+**Then we created media previews to see the media in the posts**
+
+**Now we will build drag and drop along with copy paste**
+is is done by a hook useDrazone by upload thing itself

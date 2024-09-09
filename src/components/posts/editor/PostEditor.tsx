@@ -12,6 +12,9 @@ import useMediaUpload from './useMediaUploads';
 import AddAttachmentsButton from './AddAttachmentsButton';
 import AttachmentPreviews from './AttachmentsPreview';
 import { Loader2 } from 'lucide-react';
+import { useDropzone } from '@uploadthing/react';
+import { cn } from '@/lib/utils';
+import { ClipboardEvent } from 'react';
 
 const PostEditor = () => {
    const { user } = useSessionContext();
@@ -26,6 +29,12 @@ const PostEditor = () => {
       removeAttachment,
       uploadProgress,
    } = useMediaUpload();
+
+   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      onDrop: startUpload,
+   });
+   // this is done because we want the on click to trigger the input for typing the content
+   const { onClick, ...rootProps } = getRootProps();
 
    const editor = useEditor({
       extensions: [
@@ -61,6 +70,13 @@ const PostEditor = () => {
       );
    };
 
+   const onPaste = (e: ClipboardEvent<HTMLInputElement>) => {
+      const files = Array.from(e.clipboardData.items)
+         .filter( (item) => item.kind == 'file')
+         .map((file) => file.getAsFile()) as File[];
+         startUpload(files)
+   }
+
    return (
       <div className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-sm">
          <div className="flex gap-5">
@@ -68,20 +84,30 @@ const PostEditor = () => {
                avatarUrl={user.avatarUrl}
                className="hidden sm:inline"
             />
-            <EditorContent
-               editor={editor}
-               className="max-h-[20rem] min-h-[2rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
-            />
+            <div {...rootProps} className='w-full'>
+               <EditorContent
+                  editor={editor}
+                  className={cn("max-h-[20rem] min-h-[2rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3", isDragActive && 'outline-dashed ')}
+                  onPaste={onPaste}
+               />
+               <input {...getInputProps()} />
+            </div>
          </div>
-            <AttachmentPreviews attachments={attachments} removeAttachment={removeAttachment} />
-         <div className="flex justify-end items-center gap-3">
+         <AttachmentPreviews
+            attachments={attachments}
+            removeAttachment={removeAttachment}
+         />
+         <div className="flex items-center justify-end gap-3">
             {!!isUploading && (
                <>
-                  <span className='text-sm'>{uploadProgress ?? 0 }%</span>
-                  <Loader2 className='size-5 animate-spin text-primary' />
+                  <span className="text-sm">{uploadProgress ?? 0}%</span>
+                  <Loader2 className="size-5 animate-spin text-primary" />
                </>
             )}
-            <AddAttachmentsButton onFileSelected={startUpload} disabled = {isUploading || attachments.length >= 5 }/>
+            <AddAttachmentsButton
+               onFileSelected={startUpload}
+               disabled={isUploading || attachments.length >= 5}
+            />
             <LoadingButton
                onClick={onSubmit}
                loading={mutation.isPending}
