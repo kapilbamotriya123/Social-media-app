@@ -1,3 +1,4 @@
+
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
@@ -35,6 +36,7 @@ export const getPostDataInclude = (loggedInUserId: string) => {
       user: {
          select: getUserDataSelect(loggedInUserId),
       },
+      attachments: true
    } satisfies Prisma.PostInclude;
 };
 

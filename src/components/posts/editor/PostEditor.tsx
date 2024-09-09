@@ -72,8 +72,8 @@ const PostEditor = () => {
                editor={editor}
                className="max-h-[20rem] min-h-[2rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
             />
-            <AttachmentPreviews attachments={attachments} removeAttachment={removeAttachment} />
          </div>
+            <AttachmentPreviews attachments={attachments} removeAttachment={removeAttachment} />
          <div className="flex justify-end items-center gap-3">
             {!!isUploading && (
                <>

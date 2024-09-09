@@ -73,6 +73,7 @@ const useMediaUpload = () => {
             variant: 'destructive',
             description: 'you can only upload 5 attachments per post',
         });
+        return
       }
       startAttachmentUpload(files);
    };
