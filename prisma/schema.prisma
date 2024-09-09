@@ -28,9 +28,10 @@ model User {
   posts        Post[]
   following    Follow[]  @relation("Following")
   followers    Follow[]  @relation("Followers")
-  likes      Like[]
+  likes        Like[]
+  bookmarks  Bookmark[]
 
-  createdAt DateTime @default(now())
+  createdAt DateTime   @default(now())
 
   @@map("users")
 }
@@ -64,15 +65,28 @@ model Like {
   @@map("likes")
 }
 
+model Bookmark {
+  id    String   @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@map("bookmarks")
+}
+
 model Post {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   content     String
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now()) // Adding the createdAt field
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now()) // Adding the createdAt field
   attachments Media[] //sets the relation between media post as attachment
-  likes      Like[]
-  
+  likes       Like[]
+  bookmarks    Bookmark[]
 
   @@map("posts")
 }

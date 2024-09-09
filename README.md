@@ -284,3 +284,7 @@ then added the cron job to delete the orphaned files in clear-uplaods file
 ad model to prisma just like the follower 
 the create a route with get post and delete which are self explainatory 
 then create a like button comp which takes the initial data and post, it  mutate the data to route acc to initial data and also display the like button ofc
+
+
+**next is the book mark functinality which is very similar to likes check the git commit and changes**
+

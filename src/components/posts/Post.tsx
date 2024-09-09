@@ -12,7 +12,9 @@ import { Media } from '@prisma/client';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import AttachmentPreviews from './editor/AttachmentsPreview';
-import LikeButton from '@/app/api/posts/LikeButton';
+import LikeButton from '@/app/(main)/posts/[postId]/LikeButton';
+import { Bookmark } from 'lucide-react';
+import BookmarkButton from '@/app/(main)/posts/[postId]/BookmarkButton';
 
 interface PostProps {
    post: PostData;
@@ -63,16 +65,26 @@ const Post = ({ post }: PostProps) => {
          {!!post.attachments && (
             <MediaPreviews attachments={post.attachments} />
          )}
-         <hr className='text-muted-foreground' />
-         <LikeButton
-            postId={post.id}
-            initialState={{
-               likes: post._count.likes,
-               isLikedByUser: post.likes.some(
-                  (like) => like.userId === user.id,
-               ),
-            }}
-         />
+         <hr className="text-muted-foreground" />
+         <div className="flex justify-between gap-5">
+            <LikeButton
+               postId={post.id}
+               initialState={{
+                  likes: post._count.likes,
+                  isLikedByUser: post.likes.some(
+                     (like) => like.userId === user.id,
+                  ),
+               }}
+            />
+            <BookmarkButton
+               postId={post.id}
+               initialState={{
+                  isBookmarkedByUser: post.bookmarks.some(
+                     (bookmark) => bookmark.userId === user.id,
+                  ),
+               }}
+            />{' '}
+         </div>
       </article>
    );
 };
