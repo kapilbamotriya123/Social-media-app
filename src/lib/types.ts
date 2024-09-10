@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import { z } from 'zod';
 
 export const getUserDataSelect = (loggedInUserId: string) => {
    return {
@@ -55,6 +54,7 @@ export const getPostDataInclude = (loggedInUserId: string) => {
       _count: {
          select: {
             likes: true,
+            comments: true
          },
       },
    } satisfies Prisma.PostInclude;
@@ -63,6 +63,25 @@ export const getPostDataInclude = (loggedInUserId: string) => {
 export type PostData = Prisma.PostGetPayload<{
    include: ReturnType<typeof getPostDataInclude>;
 }>;
+
+//this is to get the comments data of to show which has commented on the post 
+export const getCommentsDataInclude = (loggedInUserId:string) => {
+   return {
+      user: {
+         select: getUserDataSelect(loggedInUserId)
+      }
+   } satisfies Prisma.CommentsInclude
+}
+
+export type CommentsData = Prisma.CommentsGetPayload<{
+   include: ReturnType<typeof getCommentsDataInclude>
+}>
+
+//this for the comments page which will also have a prev cursor to render the pre comments 
+export interface CommentsPage {
+   comments: CommentsData[]
+   previousCursor: string | null
+}
 
 export interface PostPage {
    posts: PostData[];

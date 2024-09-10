@@ -25,6 +25,10 @@ export const createPostSchema = z.object({
    mediaIds: z.array(z.string()).max(5, "Cannot have more than 5 attachments"),
 });
 
+export const createCommentSchema = z.object({
+   content: requiredString,
+})
+
 //this is repeated
 export const updateUserProfileSchema = z.object({
    displayName: requiredString.min(3, 'minimum three characters required'),

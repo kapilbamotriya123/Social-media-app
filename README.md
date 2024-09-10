@@ -288,3 +288,9 @@ then create a like button comp which takes the initial data and post, it  mutate
 
 **next is the book mark functinality which is very similar to likes check the git commit and changes**
 
+**Now we will Add comments and readme file will be upToDate ALONG WITH GIT CHANGES**
+
+1. first add the model for comments in schema
+2. then define the validation and type of schema 
+3. comp/comments/action.ts
+4. then we built route which fetches the comments from 

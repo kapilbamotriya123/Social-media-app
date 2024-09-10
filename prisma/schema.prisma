@@ -30,6 +30,7 @@ model User {
   followers    Follow[]  @relation("Followers")
   likes        Like[]
   bookmarks  Bookmark[]
+  comments     Comments[]
 
   createdAt DateTime   @default(now())
 
@@ -87,8 +88,22 @@ model Post {
   attachments Media[] //sets the relation between media post as attachment
   likes       Like[]
   bookmarks    Bookmark[]
+  comments    Comments[]
 
   @@map("posts")
+}
+
+model Comments {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+
+  createdAt DateTime @default(now())
+
+  @@map("comments")
 }
 
 model Media {
