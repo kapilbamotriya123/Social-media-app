@@ -63,7 +63,7 @@ const Comments = ({ post }: CommentsProps) => {
                Failed to load comments
             </p>
          )}
-         <div className="divide-y">
+         <div className="divide-y"> 
             {comments.map((comment) => (
                <Comment comment={comment} />
             ))}

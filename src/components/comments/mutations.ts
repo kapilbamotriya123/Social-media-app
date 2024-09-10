@@ -50,7 +50,7 @@ export const useSubmitCommentMutation = (postId: string) => {
             });
 
             toast({
-               description: 'Comment created',
+               description: 'कमेन्ट सफलतापूर्वक कर दिया गया है',
             });
          },
          onError(error) {

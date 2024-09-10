@@ -19,14 +19,30 @@ export const submitComment = async ({ post, content }: submitCommentsProps) => {
       throw new Error('Unauthorized');
    }
 
-   const newComment = await prisma.comments.create({
-      data: {
-         postId: post.id,
-         content: validatedContent,
-         userId: user.id,
-      },
-      include: getCommentsDataInclude(user.id),
-   });
+   const [newComment] = await prisma.$transaction([
+    prisma.comments.create({
+        data: {
+           postId: post.id,
+           content: validatedContent,
+           userId: user.id,
+        },
+        include: getCommentsDataInclude(user.id),
+     }),
+     ...(user.id !== post.userId
+        ? [
+              prisma.notification.create({
+                  data: {
+                  issuerId: user.id,
+                  recipientId: post.userId,
+                  postId: post.id,
+                  type: 'COMMENT',
+                  },
+              }),
+        ]
+        : []
+     )
+   ])
+
    return newComment;
 };
 

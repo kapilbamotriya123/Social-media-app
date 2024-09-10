@@ -294,3 +294,9 @@ then create a like button comp which takes the initial data and post, it  mutate
 2. then define the validation and type of schema 
 3. comp/comments/action.ts
 4. then we built route which fetches the comments from 
+
+
+**Now we will build a notification system**
+1. create the notification model with reciepient and issuer property and an optional post id if it is related to post
+2. then we will add the notification entry everytime we were adding any entry to the database 
+3. we use prisma transactions to send the two db request at once and if one fails the other revert back to original

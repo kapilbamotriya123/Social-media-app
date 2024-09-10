@@ -60,20 +60,48 @@ export const POST = async (
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
          }
       }
+      const post = await prisma.post.findFirst({
+         where: { id: postId },
+         select: { userId: true },
+      });
 
-      await prisma.like.upsert({
-         where: {
-            userId_postId: {
+      if (!post) {
+         return Response.json({ error: 'Post not found' }, { status: 401 });
+      }
+
+      await prisma.$transaction([
+         prisma.like.upsert({
+            where: {
+               userId_postId: {
+                  userId: loggedInUser.id,
+                  postId,
+               },
+            },
+            create: {
                userId: loggedInUser.id,
                postId,
             },
-         },
-         create: {
-            userId: loggedInUser.id,
-            postId,
-         },
-         update: {},
-      });
+            update: {},
+         }),
+         //this is an interesting syntax what this is doing adding an item to the array if the condition is true which is done with this ternary operator and these spread operator
+         ...(loggedInUser.id  !== post.userId 
+            ? [prisma.notification.create({
+               data: {
+                  issuerId: loggedInUser.id,
+                  recipientId: post.userId,
+                  postId: postId,
+                  type: 'LIKE',
+                  
+               }
+            })]
+            : []
+         )
+      ])
+
+
+
+      
+
 
       return new Response();
    } catch (error) {
@@ -87,22 +115,41 @@ export const DELETE = async (
    { params: { postId } }: { params: { postId: string } },
 ) => {
    try {
-    const { user: loggedInUser } = await validateRequest();
-    if (!loggedInUser) {
-       return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
- 
-    await prisma.like.deleteMany({
-       where: {
-          userId: loggedInUser.id,
-          postId,
-       },
-    });
- 
-    return new Response();
+      const { user: loggedInUser } = await validateRequest();
+      if (!loggedInUser) {
+         return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const post = await prisma.post.findFirst({
+         where: { id: postId },
+         select: { userId: true },
+      });
+
+      if (!post) {
+         return Response.json({ error: 'Post not found' }, { status: 401 });
+      }
+      await prisma.$transaction([
+         prisma.like.deleteMany({
+            where: {
+               userId: loggedInUser.id,
+               postId,
+            },
+         }),
+         prisma.notification.deleteMany({
+            where: {
+               postId: postId,
+               issuerId: loggedInUser.id,
+               type: 'LIKE',
+               recipientId: post.userId,
+            }
+         })
+      ])
+
+      
+
+      return new Response();
    } catch (error) {
       console.error(error);
       return Response.json({ error: 'Internal server error' }, { status: 500 });
-    
    }
 };
