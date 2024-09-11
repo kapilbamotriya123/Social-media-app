@@ -5,6 +5,7 @@ import NotificationButton from './NotificationButton';
 import { validateRequest } from '@/auth';
 import prisma from '@/lib/prisma';
 import UserAvatar from '@/components/UserAvatar';
+import UserButton from '@/components/UserButton';
 
 interface MenuBarProps {
    className?: string;
@@ -51,15 +52,16 @@ const MenuBar = async ({ className }: MenuBarProps) => {
          </Button>
          <Button
             variant="ghost"
-            className="flex items-center justify-start gap-3"
+            className="hidden sm:flex items-center justify-start gap-3"
             title="profile"
             asChild
          >
             <Link href={`/users/${user.username}`}>
-               <UserAvatar avatarUrl={user.avatarUrl}  size={30}/>
+               <UserAvatar avatarUrl={user.avatarUrl} />
                <span className="hidden lg:inline">Profile</span>
             </Link>
          </Button>
+         <UserButton className='sm:hidden size-8'/>
       </div>
    );
 };

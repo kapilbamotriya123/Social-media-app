@@ -16,7 +16,7 @@ const SearchField = () => {
       router.push(`/search/?q=${encodeURIComponent(q)}`);
    };
    return (
-      <form onSubmit={handleSubmit} method={'GET'} action="/search">
+      <form onSubmit={handleSubmit} method={'GET'} action="/search" className=''>
          <div className="relative">
             <Input name={'q'} placeholder={'Search'} className={'pe-10'} />
             <SearchIcon className="absolute right-3 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground" />
