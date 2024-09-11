@@ -25,12 +25,11 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body className={poppins.className}>
-            {/*this part was added from uploadthing documentation in the update round*/}
             <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)} />
             <ReactQueryProvider>
                <ThemeProvider
-                  attribute={'class'}
-                  defaultTheme={'system'}
+                  attribute="class"
+                  defaultTheme="system"
                   enableSystem
                   disableTransitionOnChange
                >

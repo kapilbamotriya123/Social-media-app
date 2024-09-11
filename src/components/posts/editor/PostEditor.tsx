@@ -46,6 +46,7 @@ const PostEditor = () => {
             placeholder: 'Jaldi se likh do kuch...',
          }),
       ],
+      immediatelyRender: false,
    });
 
    const input =
