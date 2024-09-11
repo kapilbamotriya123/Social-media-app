@@ -1,6 +1,6 @@
 import {Metadata} from "next";
 import Image from "next/image";
-import signUpImage from '@/assets/signup-image.jpg'
+import signUpImage from '@/assets/iitd.webp'
 import Link from "next/link";
 import SignUpForm from "@/app/(auth)/signup/SignUpForm";
 

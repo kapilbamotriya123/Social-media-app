@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import loginImage from '@/assets/login-image.jpg'
+import loginImage from '@/assets/iitd.webp'
 import LoginForm from "./LoginForm";
 import Link from "next/link";
 import GoogleSignInButton from "./google/GoogleSignInButton";
