@@ -32,7 +32,7 @@ const TrendingTopics = async () => {
       {trendingTopics.map(({ hashtag, count }) => {
         const title = hashtag.split('#')[1];
         return (
-          <Link href={`/hashtags/${title}`} key={hashtag} className="block">
+          <Link href={`/hashtag/${title}`} key={hashtag} className="block">
             <p className="line-clamp-1 break-all font-semibold hover:underline">
               {hashtag}
             </p>

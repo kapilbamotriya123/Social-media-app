@@ -8,10 +8,9 @@ import UserAvatar from '@/components/UserAvatar';
 
 interface MenuBarProps {
    className?: string;
-   userAvatar?: string | null
 }
 
-const MenuBar = async ({ className, userAvatar }: MenuBarProps) => {
+const MenuBar = async ({ className }: MenuBarProps) => {
    const { user } = await validateRequest();
 
    if (!user) return null;
@@ -56,8 +55,8 @@ const MenuBar = async ({ className, userAvatar }: MenuBarProps) => {
             title="profile"
             asChild
          >
-            <Link href="/messages">
-               <UserAvatar avatarUrl={userAvatar}  size={30}/>
+            <Link href={`/users/${user.username}`}>
+               <UserAvatar avatarUrl={user.avatarUrl}  size={30}/>
                <span className="hidden lg:inline">Profile</span>
             </Link>
          </Button>
