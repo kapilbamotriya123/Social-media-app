@@ -45,7 +45,7 @@ const Post = ({ post }: PostProps) => {
                      </Link>
                   </UserTooltip>
                   <Link
-                     href={`posts/${post.id}`}
+                     href={`/posts/${post.id}`}
                      className="block text-sm text-muted-foreground hover:underline"
                      suppressHydrationWarning
                   >
