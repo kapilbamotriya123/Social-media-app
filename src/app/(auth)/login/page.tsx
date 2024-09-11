@@ -3,7 +3,7 @@ import Image from "next/image";
 import loginImage from '@/assets/iitd.webp'
 import LoginForm from "./LoginForm";
 import Link from "next/link";
-import GoogleSignInButton from "./google/GoogleSignInButton";
+// import GoogleSignInButton from "../../../lib/google/GoogleSignInButton";
 
 export const metadata: Metadata = {
   title: 'Login'
@@ -16,7 +16,7 @@ const LoginPage = () => {
           <div className='w-full space-y-10 overflow-y-auto p-10 md:w-1/2'>
             <h1 className={'text-3xl font-bold text-center'}>Login to Kapil&#39;s app</h1>
             {/* <div className={'space-y-5'}> */}
-              <GoogleSignInButton />
+              {/* <GoogleSignInButton /> */}
               {/* <div className="flex items-center gap-3">
                 <div className="h-px bg-muted flex-1" />
                 <span>OR</span>
