@@ -16,12 +16,12 @@ const LoginPage = () => {
           <div className='w-full space-y-10 overflow-y-auto p-10 md:w-1/2'>
             <h1 className={'text-3xl font-bold text-center'}>Login to Kapil&#39;s app</h1>
             <div className={'space-y-5'}>
-              <GoogleSignInButton />
-              <div className="flex items-center gap-3">
-                <div className="h-px bg-muted flex-1" />
-                <span>OR</span>
-                <div className="h-px bg-muted flex-1" />
-              </div>
+              {/*<GoogleSignInButton />*/}
+              {/*<div className="flex items-center gap-3">*/}
+              {/*  <div className="h-px bg-muted flex-1" />*/}
+              {/*  <span>OR</span>*/}
+              {/*  <div className="h-px bg-muted flex-1" />*/}
+              {/*</div>*/}
               <LoginForm />
             </div>
             <Link href='/signup' className='block text-center hover:underline'>Don&#39;t have an account? Sign up</Link>
